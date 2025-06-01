@@ -41,13 +41,7 @@ jobs:
       
       - name: Clean Up Pre-Artifact
         run: |
-          rm -rf CMakeFiles \
-            raylib \
-            cmake_install.cmake \
-            CMakeCache.txt \
-            CPackConfig.cmake \
-            CPackSourceConfig.cmake \
-            Makefile
+          rm -rf CMakeFiles raylib cmake_install.cmake CMakeCache.txt CPackConfig.cmake CPackSourceConfig.cmake Makefile
       
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4

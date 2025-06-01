@@ -170,4 +170,5 @@ jobs:
             --prerelease=false \
             --target ${{ github.sha }} \
             artifacts/4MB_Game_Jam_2025.Web.zip \
+            artifacts/4MB_Game_Jam_2025.Ubuntu.zip \
             artifacts/4MB_Game_Jam_2025.Windows.zip

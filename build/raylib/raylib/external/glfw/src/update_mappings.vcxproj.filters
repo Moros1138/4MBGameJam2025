@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Jon\Projects\Moros1138\4MB-Game-Jam-2025\build\CMakeFiles\bf28b722fdfb072880bcd33eab7b6ed2\update_mappings.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Jon\Projects\Moros1138\4MB-Game-Jam-2025\raylib\src\external\glfw\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\Jon\Projects\Moros1138\4MB-Game-Jam-2025\raylib\src\external\glfw\src\mappings.h.in">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="C:\Users\Jon\Projects\Moros1138\4MB-Game-Jam-2025\raylib\src\external\glfw\CMake\GenerateMappings.cmake" />
+    <None Include="C:\Users\Jon\Projects\Moros1138\4MB-Game-Jam-2025\build\raylib\raylib\external\glfw\src\CMakeFiles\update_mappings" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{DA96685E-7A12-300F-A24F-787EBA11D808}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{5053C6F7-06EF-3CB0-A21A-1C17F0CBB0A2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

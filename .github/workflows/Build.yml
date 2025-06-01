@@ -141,7 +141,7 @@ jobs:
       - name: Zip Artifacts
         run: |
           (cd artifacts/4MB_Game_Jam_2025.Web; zip -r ../4MB_Game_Jam_2025.Web.zip .)
-          (tar -czvf 4MB_Game_Jam_2025.Ubuntu.tar.gz --directory=artifacts/4MB_Game_Jam_2025.Ubuntu .)
+          (cd artifacts; tar -czvf 4MB_Game_Jam_2025.Ubuntu.tar.gz --directory=4MB_Game_Jam_2025.Ubuntu .)
           (cd artifacts/4MB_Game_Jam_2025.Windows; zip -r ../4MB_Game_Jam_2025.Windows.zip .)
       
       - name: Confirm Files

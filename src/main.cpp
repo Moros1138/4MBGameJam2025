@@ -1,7 +1,15 @@
 #include "raylib.h"
+#include <iostream>
+#include <fstream>
+#include <string>
 
 int main()
 {
+    std::ifstream file("assets/dummy.txt");
+    std::string line;
+    std::getline(file, line);
+    std::cout << line << "\n";
+
     constexpr int screenWidth = 800;
     constexpr int screenHeight = 450;
     

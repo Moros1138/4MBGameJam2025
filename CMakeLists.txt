@@ -16,7 +16,8 @@ if (${PLATFORM} STREQUAL "Web")
 
     set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".html")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s USE_GLFW=3 -s ASYNCIFY -s GL_ENABLE_GET_PROC_ADDRESS=1")
-
+    target_link_options(${PROJECT_NAME} PRIVATE --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@assets)
+    
 else()
     
     # Copy assets when not Web platform

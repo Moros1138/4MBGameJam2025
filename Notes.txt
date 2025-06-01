@@ -8,8 +8,7 @@ x Git
 x Use release mode instead of debug mode
 x Cmake
 x Cross platform building. Specifically, windows, and emscripten. linux, if there's time.
-
-Grok
+x Grok
 
 Worms, Holes and Wormholes
 

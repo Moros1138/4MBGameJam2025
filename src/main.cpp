@@ -61,6 +61,7 @@ int main(void) {
 
     // Mouse control setup
     SetMousePosition(GetScreenWidth()/2, GetScreenHeight()/2);
+    HideCursor();
     DisableCursor();
 
     bool gameWon = false;

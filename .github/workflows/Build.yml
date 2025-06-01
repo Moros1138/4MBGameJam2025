@@ -35,7 +35,7 @@ jobs:
       - name: Build
         run: |
           source emsdk/emsdk_env.sh
-          emcmake cmake . -B build
+          emcmake cmake . -B build -DCMAKE_BUILD_TYPE=Release
           cmake --build build --config=Release
         shell: bash
       
@@ -48,6 +48,46 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: 4MB_Game_Jam_2025.Web
+          path: build/*
+
+  ubuntu:
+    name: Ubuntu
+    runs-on: ubuntu-24.04
+  
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zlib1g-dev libpng-dev libx11-dev libgl1-mesa-dev libglu1-mesa-dev
+
+      - name: Set default gcc and g++ versions to latest
+        run: |
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
+            
+      - name: Build
+        env:
+          CC: gcc
+          CXX: g++
+        run: |
+          cmake . -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --config=Release
+        shell: bash
+      
+      - name: Clean Up Pre-Artifact
+        run: |
+          cd build
+          rm -rf CMakeFiles raylib cmake_install.cmake CMakeCache.txt CPackConfig.cmake CPackSourceConfig.cmake Makefile
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 4MB_Game_Jam_2025.Ubuntu
           path: build/*
 
   windows:
@@ -72,7 +112,7 @@ jobs:
           path: build/Release/*
   release:
     name: Release
-    needs: [emscripten, windows]  
+    needs: [emscripten, ubuntu, windows]  
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -86,7 +126,11 @@ jobs:
           name: 4MB_Game_Jam_2025.Web
           path: artifacts/4MB_Game_Jam_2025.Web
 
-
+      - name: Download Ubuntu Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: 4MB_Game_Jam_2025.Ubuntu
+          path: artifacts/4MB_Game_Jam_2025.Ubuntu
 
       - name: Download Windows Artifact
         uses: actions/download-artifact@v4
@@ -97,7 +141,9 @@ jobs:
       - name: Zip Artifacts
         run: |
           (cd artifacts/4MB_Game_Jam_2025.Web; zip -r ../4MB_Game_Jam_2025.Web.zip .)
+          (cd artifacts/4MB_Game_Jam_2025.Ubuntu; zip -r ../4MB_Game_Jam_2025.Ubuntu.zip .)
           (cd artifacts/4MB_Game_Jam_2025.Windows; zip -r ../4MB_Game_Jam_2025.Windows.zip .)
+      
       - name: Confirm Files
         id: list-files
         run: ls -Al artifacts

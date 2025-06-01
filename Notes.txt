@@ -1,17 +1,18 @@
 
 Goals
 
-Use Raylib
-Vs Code
+x Use Raylib
+x Vs Code
+x Github
+x Git
+x Use release mode instead of debug mode
+x Cmake
+x Cross platform building. Specifically, windows, and emscripten. linux, if there's time.
+
 Grok
-Github
-Git
-Use release mode instead of debug mode
-Cmake
 
 Worms, Holes and Wormholes
 
-Cross platform building. Specifically, windows, and emscripten. linux, if there's time.
 
 Automatic Building on repository push.
 

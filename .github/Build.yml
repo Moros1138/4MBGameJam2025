@@ -1,0 +1,126 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  emscripten:
+    name: Emscripten
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Set up Python (required for Emscripten)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Emscripten SDK
+        run: |
+          git clone https://github.com/emscripten-core/emsdk.git
+          cd emsdk
+          ./emsdk install latest
+          ./emsdk activate latest
+          source ./emsdk_env.sh
+        shell: bash
+
+      - name: Build
+        run: |
+          source emsdk/emsdk_env.sh
+          emcmake cmake . -B build
+          cmake --build build --config=Release
+        shell: bash
+      
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 4MB_Game_Jam_2025.Web
+          path: build/*
+
+  windows:
+    name: Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+      
+      - name: Build
+        run: |
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --config=Release
+        shell: pwsh
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 4MB_Game_Jam.Windows
+          path: build/Release/*
+  release:
+    name: Release
+    needs: [emscripten, windows]  
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      
+      - name: Download Emscripten Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: 4MB_Game_Jam.Web
+          path: artifacts/4MB_Game_Jam.Web
+
+      - name: Download Ubuntu Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: 4MB_Game_Jam.Ubuntu
+          path: artifacts/4MB_Game_Jam.Ubuntu
+
+      - name: Download Windows Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: 4MB_Game_Jam.Windows
+          path: artifacts/4MB_Game_Jam.Windows
+      
+      - name: Zip Artifacts
+        run: |
+          (cd artifacts/4MB_Game_Jam.Web; zip -r ../4MB_Game_Jam.Web.zip .)
+          (cd artifacts/4MB_Game_Jam.Windows; zip -r ../4MB_Game_Jam.Windows.zip .)
+      - name: Confirm Files
+        id: list-files
+        run: ls -Al artifacts
+
+      - name: Get commit SHA
+        id: commit
+        run: echo "COMMIT_SHA=${{ github.sha }}" >> $GITHUB_ENV
+      
+      - name: Delete existing latest release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete latest --yes || true
+        continue-on-error: true
+
+      - name: Create or Update Latest Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create latest \
+            --title "Latest Release" \
+            --notes "Latest release with artifacts from commit ${{ env.COMMIT_SHA }}." \
+            --draft=false \
+            --prerelease=false \
+            --target ${{ github.sha }} \
+            artifacts/4MB_Game_Jam.Web.zip \
+            artifacts/4MB_Game_Jam.Windows.zip

@@ -63,7 +63,7 @@ jobs:
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: 4MB_Game_Jam.Windows
+          name: 4MB_Game_Jam_2025.Windows
           path: build/Release/*
   release:
     name: Release
@@ -78,25 +78,21 @@ jobs:
       - name: Download Emscripten Artifact
         uses: actions/download-artifact@v4
         with:
-          name: 4MB_Game_Jam.Web
-          path: artifacts/4MB_Game_Jam.Web
+          name: 4MB_Game_Jam_2025.Web
+          path: artifacts/4MB_Game_Jam_2025.Web
 
-      - name: Download Ubuntu Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: 4MB_Game_Jam.Ubuntu
-          path: artifacts/4MB_Game_Jam.Ubuntu
+
 
       - name: Download Windows Artifact
         uses: actions/download-artifact@v4
         with:
-          name: 4MB_Game_Jam.Windows
-          path: artifacts/4MB_Game_Jam.Windows
+          name: 4MB_Game_Jam_2025.Windows
+          path: artifacts/4MB_Game_Jam_2025.Windows
       
       - name: Zip Artifacts
         run: |
-          (cd artifacts/4MB_Game_Jam.Web; zip -r ../4MB_Game_Jam.Web.zip .)
-          (cd artifacts/4MB_Game_Jam.Windows; zip -r ../4MB_Game_Jam.Windows.zip .)
+          (cd artifacts/4MB_Game_Jam_2025.Web; zip -r ../4MB_Game_Jam_2025.Web.zip .)
+          (cd artifacts/4MB_Game_Jam_2025.Windows; zip -r ../4MB_Game_Jam_2025.Windows.zip .)
       - name: Confirm Files
         id: list-files
         run: ls -Al artifacts
@@ -122,5 +118,5 @@ jobs:
             --draft=false \
             --prerelease=false \
             --target ${{ github.sha }} \
-            artifacts/4MB_Game_Jam.Web.zip \
-            artifacts/4MB_Game_Jam.Windows.zip
+            artifacts/4MB_Game_Jam_2025.Web.zip \
+            artifacts/4MB_Game_Jam_2025.Windows.zip
